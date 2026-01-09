@@ -1,0 +1,7 @@
+{
+  "name": "Domira",
+  "description": "A trusted dual-sided rental marketplace for verified properties and roommate matching in Malaysia.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}

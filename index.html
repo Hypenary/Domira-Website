@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Domira - Rent with Trust</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              domira: {
+                gold: '#FBBF24',
+                yellow: '#F4C430',
+                navy: '#1e293b',
+                dark: '#0F172A',
+                deep: '#020617',
+              }
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+      .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+      .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; }
+      
+      .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      
+      .leaflet-container { background: transparent !important; }
+      .dark .leaflet-tile { filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%); }
+
+      /* Sapphire Gold Theme (60% Gold Dominance) */
+      .theme-sapphire {
+        background-color: #020617 !important;
+      }
+      .theme-sapphire .bg-white, 
+      .theme-sapphire .dark\:bg-domira-navy,
+      .theme-sapphire .bg-slate-50,
+      .theme-sapphire .dark\:bg-domira-dark {
+        background-color: #FBBF24 !important;
+        color: #020617 !important;
+        border-color: rgba(2, 6, 23, 0.1) !important;
+      }
+      .theme-sapphire .text-slate-900, 
+      .theme-sapphire .dark\:text-white,
+      .theme-sapphire .text-slate-600,
+      .theme-sapphire .text-slate-500,
+      .theme-sapphire .text-slate-700 {
+        color: #020617 !important;
+      }
+      .theme-sapphire .text-slate-400 {
+        color: rgba(2, 6, 23, 0.6) !important;
+      }
+      .theme-sapphire button.bg-domira-gold {
+        background-color: #020617 !important;
+        color: #FBBF24 !important;
+      }
+      .theme-sapphire .border-slate-100,
+      .theme-sapphire .border-slate-200,
+      .theme-sapphire .border-slate-800,
+      .theme-sapphire .border-white\/10 {
+        border-color: rgba(2, 6, 23, 0.2) !important;
+      }
+      .theme-sapphire .shadow-xl, .theme-sapphire .shadow-2xl {
+        box-shadow: 0 20px 50px rgba(0,0,0,0.4) !important;
+      }
+      .theme-sapphire input, .theme-sapphire textarea, .theme-sapphire select {
+        background-color: rgba(2, 6, 23, 0.05) !important;
+        border-color: rgba(2, 6, 23, 0.2) !important;
+        color: #020617 !important;
+      }
+    </style>
+    <script type="importmap">
+    {
+      "imports": {
+        "react/": "https://esm.sh/react@^19.2.3/",
+        "react": "https://esm.sh/react@^19.2.3",
+        "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+        "react-router-dom": "https://esm.sh/react-router-dom@^7.10.1",
+        "lucide-react": "https://esm.sh/lucide-react@^0.561.0",
+        "leaflet": "https://esm.sh/leaflet@1.9.4"
+      }
+    }
+    </script>
+  </head>
+  <body class="bg-white dark:bg-domira-dark text-slate-900 dark:text-slate-100 font-sans transition-colors duration-300">
+    <div id="root"></div>
+  </body>
+</html>
