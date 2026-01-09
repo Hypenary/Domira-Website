@@ -197,7 +197,8 @@ export const FindProperty: React.FC = () => {
               </div>
 
               {/* Sidebar Ad Placement - ONLY for non-premium users */}
-              {!user?.is_premium && <BannerAd user={user} className="mt-16 scale-95 origin-top" />}
+              {/* Fix: Changed is_premium to is_gold in UserProfile check at line 200 */}
+              {!user?.is_gold && <BannerAd user={user} className="mt-16 scale-95 origin-top" />}
            </div>
 
            {/* Results Area */}
