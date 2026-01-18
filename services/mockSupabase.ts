@@ -11,7 +11,6 @@ const MOCK_BADGES: Badge[] = [
   { id: 'b2', name: 'Super Cleaner', description: 'Completed 5+ cleaning gigs with 5-star ratings.', icon: 'Sparkles', earned: true, progress: 5, total: 5 },
   { id: 'b3', name: 'Reliable Tenant', description: '12 months of on-time rental payments.', icon: 'Star', earned: true },
   { id: 'b4', name: 'Quick Responder', description: 'Replies to messages in under 10 minutes.', icon: 'Zap', earned: false, progress: 7, total: 10 },
-  { id: 'b5', name: 'Community Helper', description: 'Referred 3 friends to the platform.', icon: 'Users', earned: false, progress: 1, total: 3 },
 ];
 
 const MOCK_INQUIRIES: Inquiry[] = [
@@ -25,17 +24,6 @@ const MOCK_INQUIRIES: Inquiry[] = [
     status: 'PENDING',
     date: 'Oct 28, 2024',
     message: 'Is the parking spot covered? Also wondering about the WiFi speed.'
-  },
-  {
-    id: 'inq_2',
-    property_id: 'prop_2',
-    tenant_id: 'tenant_2',
-    tenant_name: 'Kevin Tan',
-    tenant_avatar: 'https://picsum.photos/seed/tenant2/100/100',
-    type: 'VIEWING',
-    status: 'PENDING',
-    date: 'Oct 29, 2024',
-    message: 'I would like to view the master room this Saturday morning if possible.'
   }
 ];
 
@@ -51,21 +39,21 @@ let properties_db: Property[] = [
     amenities: ['Seaview', 'Wifi', 'Infinity Pool'], images: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800'],
     is_verified: true, category: 'Master Room', beds: 1, baths: 1, sqft: 400, halal_kitchen: true, pets_allowed: false, gender_preference: 'Female', car_park: true, laundry: true, cooking_allowed: true, verification_status: 'verified',
     furnished_status: 'Fully', floor_level: 'High', has_balcony: true, agent: { name: 'Sarah Pro', image: 'https://picsum.photos/seed/agent2/100/100' }
-  }
-];
-
-let gigs_db: Gig[] = [
+  },
   {
-    id: 'gig_1', landlord_id: 'landlord_1', landlord_name: 'Sarah Lim', landlord_avatar: 'https://picsum.photos/seed/sarah/100/100', landlord_rating: 4.8,
-    title: 'AC Filter Cleaning @ Alamesra', description: 'Need someone to clean filters for 3 AC units. Brushes provided.', location: 'Alamesra, KK', distance_from_ums: '0.5 km', pay_amount: 30, duration: 1, category: 'Cleaning', is_public: true, status: 'POSTED', created_at: 'Oct 28, 2024'
+    id: 'prop_unverified', landlord_id: 'current_user', title: 'Unverified Unit @ Kingfisher', address: 'Kingfisher, Kota Kinabalu', price: 550, lat: 6.0154, lng: 116.1324,
+    amenities: ['Wifi', 'Fan'], images: ['https://images.unsplash.com/photo-1598928506311-c55ded91a20c?w=800'],
+    is_verified: false, category: 'Single Room', beds: 1, baths: 1, sqft: 180, halal_kitchen: true, pets_allowed: false, gender_preference: 'Any', car_park: false, laundry: true, cooking_allowed: true, verification_status: 'not_requested',
+    furnished_status: 'Partially', floor_level: 'Low', has_balcony: false, agent: { name: 'Demo Host', image: 'https://picsum.photos/seed/user/200/200' },
+    description: 'This listing is unverified. Verified units get 3x more views and higher tenant trust.'
   }
 ];
 
-const UNIQUE_NAMES = [
-  'Nurul Aisyah', 'Kevin Tan', 'Mohd Farhan', 'Chong Wei', 'Siti Aminah', 'Jessica Wong', 'Raj Kumar', 'Ariff Adnan'
-];
+let gigs_db: Gig[] = [];
 
-const MOCK_ROOMMATES: RoommateProfile[] = Array.from({ length: 20 }).map((_, i) => ({
+const UNIQUE_NAMES = ['Nurul Aisyah', 'Kevin Tan', 'Mohd Farhan', 'Chong Wei', 'Siti Aminah'];
+
+const MOCK_ROOMMATES: RoommateProfile[] = Array.from({ length: 15 }).map((_, i) => ({
   id: `tenant_${i + 1}`,
   user: {
     id: `tenant_${i + 1}`,
@@ -79,22 +67,22 @@ const MOCK_ROOMMATES: RoommateProfile[] = Array.from({ length: 20 }).map((_, i) 
     document_verified: i % 2 === 0,
     landlord_status: 'none',
     agent_status: 'none',
-    occupation: i % 3 === 0 ? 'Medical Student, UMS' : 'Engineering Student, UMS',
-    bio: 'Looking for a clean and respectful roommate near Sepanggar area. I study a lot but enjoy occasional weekend hikes.',
+    occupation: 'Student, UMS',
+    bio: 'Looking for a clean and respectful roommate near Sepanggar area.',
     saved_listings: [],
     badges: i % 3 === 0 ? MOCK_BADGES.slice(0, 2) : [],
-    rating: 4.0 + (i % 11) / 10,
+    rating: 4.5,
     reviews: MOCK_REVIEWS,
     is_gold: i === 0,
-    gold_theme: 'Midnight'
+    gold_theme: 'Classic'
   },
-  age: 19 + (i % 5),
+  age: 20 + (i % 5),
   gender: i % 2 === 0 ? 'Female' : 'Male',
   budget_min: 300,
-  budget_max: 600 + (i * 20),
+  budget_max: 700,
   preferred_locations: ['Sepanggar', 'Alamesra'],
-  lifestyle_tags: ['Clean', 'Student', i % 2 === 0 ? 'Halal' : 'Gamer'],
-  match_percentage: 80 + (i % 20)
+  lifestyle_tags: ['Clean', 'Student', 'Halal'],
+  match_percentage: 85
 }));
 
 export const api = {
@@ -105,7 +93,7 @@ export const api = {
     },
     listByLandlord: async (id: string): Promise<Property[]> => {
       await new Promise(r => setTimeout(r, 400));
-      return properties_db.filter(p => p.landlord_id === id || id === 'current_user');
+      return properties_db.filter(p => p.landlord_id === id);
     },
     getById: async (id: string): Promise<Property | undefined> => {
       await new Promise(r => setTimeout(r, 200));
@@ -119,12 +107,17 @@ export const api = {
     },
     update: async (id: string, data: Partial<Property>): Promise<Property> => {
       const idx = properties_db.findIndex(p => p.id === id);
-      properties_db[idx] = { ...properties_db[idx], ...data };
-      return properties_db[idx];
+      if (idx !== -1) {
+        properties_db[idx] = { ...properties_db[idx], ...data };
+        return properties_db[idx];
+      }
+      throw new Error("Property not found");
     },
     requestVerification: async (id: string) => {
        const idx = properties_db.findIndex(p => p.id === id);
-       properties_db[idx].verification_status = 'pending';
+       if (idx !== -1) {
+         properties_db[idx].verification_status = 'pending';
+       }
     }
   },
   gigs: {
@@ -141,7 +134,7 @@ export const api = {
     getDashboard: async (id: string) => {
       await new Promise(r => setTimeout(r, 600));
       return {
-        stats: { totalViews: 450, activeInquiries: MOCK_INQUIRIES.length, pendingViewings: 2, totalReserved: 1 },
+        stats: { totalViews: 128, activeInquiries: 1, pendingViewings: 0, totalReserved: 0 },
         inquiries: MOCK_INQUIRIES,
         applications: [],
         maintenance: []
@@ -167,12 +160,12 @@ export const api = {
     login: async (email: string, role: UserRole): Promise<UserProfile> => {
       await new Promise(r => setTimeout(r, 600));
       return {
-        id: 'current_user', email, full_name: 'Demo User', avatar_url: 'https://picsum.photos/seed/user/200/200',
-        role, is_verified: false, roommate_finding_active: true, questionnaire_completed: false, document_verified: false,
-        landlord_status: role === UserRole.LANDLORD ? 'pending' : 'none', agent_status: role === UserRole.AGENT ? 'pending' : 'none', 
-        occupation: role === UserRole.TENANT ? 'Student' : role === UserRole.AGENT ? 'Property Consultant' : 'Owner', 
+        id: 'current_user', email, full_name: 'Demo Host', avatar_url: 'https://picsum.photos/seed/user/200/200',
+        role, is_verified: true, roommate_finding_active: true, questionnaire_completed: true, document_verified: true,
+        landlord_status: 'approved', agent_status: 'none', 
+        occupation: 'Property Investor', 
         lifestyle_tags: [], saved_listings: [],
-        badges: MOCK_BADGES.map(b => ({ ...b, earned: false })), rating: 4.8, reviews: [], is_gold: false, gold_theme: 'Classic'
+        badges: MOCK_BADGES.map(b => ({ ...b, earned: true })), rating: 5.0, reviews: [], is_gold: false, gold_theme: 'Classic'
       };
     },
     resetPassword: async (e: string) => true

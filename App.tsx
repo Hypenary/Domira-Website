@@ -24,7 +24,7 @@ import { VerifyDocuments } from './pages/VerifyDocuments';
 import { LandlordApply } from './pages/LandlordApply';
 import { AgentApply } from './pages/AgentApply';
 import { PropertyConversionPlanner } from './pages/PropertyConversionPlanner';
-import { UserProfile, Badge } from './types';
+import { UserProfile, Badge, UserRole } from './types';
 import { ShieldAlert, Sparkles, X, FileText, Award } from 'lucide-react';
 import { AuthModal } from './components/AuthModal';
 
@@ -33,6 +33,30 @@ function ScrollToTop() {
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return null;
 }
+
+const DEFAULT_USER: UserProfile = {
+  id: 'demo_alex_2024',
+  email: 'alex.malaysian@domira.my',
+  full_name: 'Alex Malaysian',
+  avatar_url: 'https://picsum.photos/seed/alex/400/400',
+  role: UserRole.TENANT,
+  is_verified: true,
+  is_gold: false,
+  gold_theme: 'Classic',
+  roommate_finding_active: true,
+  questionnaire_completed: true,
+  document_verified: true,
+  landlord_status: 'none',
+  occupation: 'Digital Consultant',
+  bio: 'Peaceful working professional looking for a high-harmony living space in Klang Valley or KK. I value cleanliness and respect quiet hours after 11 PM.',
+  lifestyle_tags: ['Clean', 'Working Pro', 'Early Riser', 'Halal', 'Non-Smoker'],
+  saved_listings: ['prop_1'],
+  badges: [
+    { id: 'b_demo_1', name: 'Verified Resident', description: 'Identity and income proof verified.', icon: 'ShieldCheck', earned: true },
+    { id: 'b_demo_2', name: 'Early Adopter', description: 'Member of the Domira 2024 Founding Class.', icon: 'Zap', earned: true }
+  ],
+  rating: 5.0
+};
 
 const BadgeNotification = ({ badge, onClose }: { badge: Badge | null, onClose: () => void }) => {
   if (!badge) return null;
@@ -56,7 +80,12 @@ const BadgeNotification = ({ badge, onClose }: { badge: Badge | null, onClose: (
 const App: React.FC = () => {
   const [user, setUser] = useState<UserProfile | null>(() => {
     const saved = localStorage.getItem('domira_user');
-    return saved ? JSON.parse(saved) : null;
+    // Implementation of "Logged in by default"
+    if (!saved) {
+      localStorage.setItem('domira_user', JSON.stringify(DEFAULT_USER));
+      return DEFAULT_USER;
+    }
+    return JSON.parse(saved);
   });
 
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);

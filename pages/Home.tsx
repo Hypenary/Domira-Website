@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../components/Button';
-import { Shield, Users, Zap, CheckCircle, ArrowRight, Search, MapPin, DollarSign, Filter, Star, Sparkles } from 'lucide-react';
+import { Shield, Users, Zap, CheckCircle, ArrowRight, Search, MapPin, DollarSign, Filter, Star, Sparkles, ShieldCheck, Landmark } from 'lucide-react';
 import { Logo } from '../components/Logo';
 import { PropertyCard } from '../components/PropertyCard';
 import { api } from '../services/mockSupabase';
@@ -46,15 +46,17 @@ export const Home: React.FC = () => {
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-blue-500/10 blur-[120px]"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 flex flex-col items-center text-center z-10">
-           <Logo variant="full" size={100} className="mb-8 text-white" />
+           <div className="inline-flex gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-domira-gold text-[10px] font-black uppercase tracking-[0.3em] mb-8 animate-in slide-in-from-top-4">
+              <ShieldCheck size={14} className="fill-domira-gold animate-pulse" /> Verified Network Sabah
+           </div>
            
            <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[0.9] flex flex-col">
-             <span>RENT WITH <span className="text-domira-gold">TRUST</span></span>
+             <span>RENT WITH <span className="text-domira-gold italic">TRUST</span></span>
              <span>LIVE WITH <span className="text-blue-400">PEACE</span></span>
            </h1>
            
            <p className="text-xl text-slate-400 max-w-2xl mb-12 font-medium">
-             Verified listings and lifestyle-matched housemates in Kota Kinabalu.
+             Kota Kinabalu's most secure rental marketplace. Lifestyle-matched housemates and manually verified properties.
            </p>
            
            {/* Enhanced Search Bar */}
@@ -92,14 +94,14 @@ export const Home: React.FC = () => {
                  </select>
               </div>
               <Button type="submit" variant="primary" size="lg" className="md:px-12 py-5 font-black uppercase tracking-widest text-xs shadow-xl">
-                 Search Units
+                 Explore Units
               </Button>
            </form>
 
            <div className="flex flex-wrap justify-center gap-6 text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">
               <span className="flex items-center gap-2"><CheckCircle size={14} className="text-domira-gold"/> Halal Kitchen Options</span>
-              <span className="flex items-center gap-2"><CheckCircle size={14} className="text-domira-gold"/> Pet-Friendly Filters</span>
-              <span className="flex items-center gap-2"><CheckCircle size={14} className="text-domira-gold"/> Gender Specific Units</span>
+              <span className="flex items-center gap-2"><CheckCircle size={14} className="text-domira-gold"/> Escrow Deposit Protection</span>
+              <span className="flex items-center gap-2"><CheckCircle size={14} className="text-domira-gold"/> Female-Only Units</span>
            </div>
         </div>
       </section>
@@ -109,11 +111,11 @@ export const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4">
            <div className="flex justify-between items-end mb-12">
               <div>
-                 <p className="text-domira-gold font-black uppercase text-[10px] tracking-[0.3em] mb-2">Selected Assets</p>
-                 <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">Featured Verified Units</h2>
+                 <p className="text-domira-gold font-black uppercase text-[10px] tracking-[0.3em] mb-2">Verified Collection</p>
+                 <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">Elite Housing Index</h2>
               </div>
               <Link to="/find-property" className="text-xs font-black text-slate-400 hover:text-domira-gold uppercase tracking-widest flex items-center gap-2 transition-colors">
-                 See All Listings <ArrowRight size={14}/>
+                 Full Marketplace <ArrowRight size={14}/>
               </Link>
            </div>
            
@@ -123,55 +125,77 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Home Sponsored Placement */}
+      {/* Trust & Verification Section */}
+      <section className="py-24 bg-slate-50 dark:bg-domira-deep border-y border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4">
+           <div className="grid md:grid-cols-2 gap-20 items-center">
+              <div>
+                 <div className="w-16 h-16 bg-domira-gold/10 rounded-2xl flex items-center justify-center mb-8 border border-domira-gold/20 shadow-xl">
+                    <ShieldCheck className="text-domira-gold" size={32} />
+                 </div>
+                 <h2 className="text-4xl md:text-6xl font-black text-slate-900 dark:text-white tracking-tighter mb-8 uppercase leading-[0.9]">The Gold <br/><span className="text-domira-gold">Standard</span>.</h2>
+                 <p className="text-xl text-slate-500 dark:text-slate-400 font-medium mb-12 leading-relaxed">
+                    Our human agents physically audit properties to eliminate scams. Every "Verified" unit has been checked for address accuracy, ownership documents, and quality.
+                 </p>
+                 <div className="grid grid-cols-2 gap-8">
+                    <div>
+                       <p className="text-3xl font-black text-slate-900 dark:text-white">100%</p>
+                       <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Manual Audit</p>
+                    </div>
+                    <div>
+                       <p className="text-3xl font-black text-slate-900 dark:text-white">RM 0</p>
+                       <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest">Fraud Losses</p>
+                    </div>
+                 </div>
+              </div>
+              <div className="bg-white dark:bg-domira-navy p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden group">
+                 <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:scale-125 transition-transform"><Landmark size={120} className="text-domira-gold" /></div>
+                 <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-6 uppercase tracking-tight">For Landlords</h3>
+                 <p className="text-slate-500 dark:text-slate-400 font-medium mb-10 leading-relaxed">
+                    Elevate your profile by requesting a professional verification audit. Attract high-quality tenants faster with our "Verified Host" badge.
+                 </p>
+                 <Link to="/for-landlords">
+                    <Button variant="primary" className="px-10 py-5 font-black uppercase text-[10px] tracking-widest shadow-xl shadow-domira-gold/20">Access Landlord Hub</Button>
+                 </Link>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* Roommate Matching Teaser */}
+      <section className="py-32 bg-white dark:bg-domira-dark">
+         <div className="max-w-7xl mx-auto px-4 text-center">
+            <p className="text-domira-gold font-black uppercase text-[10px] tracking-[0.3em] mb-6">Algorithm Matching</p>
+            <h2 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white tracking-tighter mb-12 uppercase leading-none">Find Your <span className="text-domira-gold italic">Harmony</span>.</h2>
+            <div className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto mb-20">
+               <div className="space-y-4">
+                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center mx-auto"><Users size={24}/></div>
+                  <p className="text-sm font-black uppercase text-slate-900 dark:text-white">Lifestyle Audit</p>
+                  <p className="text-xs text-slate-500">Cleanliness, noise, and guest habits compared.</p>
+               </div>
+               <div className="space-y-4">
+                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center mx-auto"><CheckCircle size={24}/></div>
+                  <p className="text-sm font-black uppercase text-slate-900 dark:text-white">Mutual Harmony</p>
+                  <p className="text-xs text-slate-500">Only match with users sharing your core values.</p>
+               </div>
+               <div className="space-y-4">
+                  <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center mx-auto"><Shield size={24}/></div>
+                  <p className="text-sm font-black uppercase text-slate-900 dark:text-white">Secured Chat</p>
+                  <p className="text-xs text-slate-500">Privacy-first contact until both parties approve.</p>
+               </div>
+            </div>
+            <Link to="/find-roommate">
+               <Button variant="outline" className="px-12 py-6 border-slate-200 dark:border-slate-800 font-black uppercase text-xs tracking-widest hover:border-domira-gold hover:text-domira-gold transition-all">Launch Matching Engine</Button>
+            </Link>
+         </div>
+      </section>
+
+      {/* Community Proof */}
       {!user?.is_gold && (
         <section className="py-12 max-w-7xl mx-auto px-4">
            <BannerAd user={user} />
         </section>
       )}
-
-      {/* Feature Section */}
-      <section className="py-24 bg-slate-50 dark:bg-domira-deep">
-        <div className="max-w-7xl mx-auto px-4">
-           <div className="grid md:grid-cols-3 gap-8">
-              {[
-                { icon: Shield, title: "Verified Assets", desc: "Every property is manually checked to eliminate phantom listings and deposit scams." },
-                { icon: Users, title: "Co-Living Intelligence", desc: "Our lifestyle algorithm pairs you with residents who share your habits and values." },
-                { icon: Zap, title: "Fintech Integration", desc: "Secure rent collection via FPX and automated utility splitting between housemates." },
-              ].map((feature, idx) => (
-                <div key={idx} className="p-10 rounded-[2.5rem] bg-white dark:bg-domira-navy border border-slate-200 dark:border-slate-800 shadow-xl hover:-translate-y-2 transition-all group">
-                   <div className="w-16 h-16 bg-slate-50 dark:bg-domira-dark rounded-2xl flex items-center justify-center mb-8 border border-slate-100 dark:border-slate-700 group-hover:bg-domira-gold transition-colors">
-                     <feature.icon className="w-7 h-7 text-domira-navy dark:text-domira-gold group-hover:text-domira-navy transition-colors" />
-                   </div>
-                   <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 tracking-tight">{feature.title}</h3>
-                   <p className="text-slate-500 dark:text-slate-400 leading-relaxed font-medium">{feature.desc}</p>
-                </div>
-              ))}
-           </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-24 bg-domira-navy text-white text-center">
-         <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-12">
-            <div>
-               <p className="text-5xl font-black text-domira-gold mb-2">500+</p>
-               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Verified Units</p>
-            </div>
-            <div>
-               <p className="text-5xl font-black text-domira-gold mb-2">2.5k</p>
-               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Monthly Matches</p>
-            </div>
-            <div>
-               <p className="text-5xl font-black text-domira-gold mb-2">0</p>
-               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">Deposit Scams</p>
-            </div>
-            <div>
-               <p className="text-5xl font-black text-domira-gold mb-2">4.9/5</p>
-               <p className="text-[10px] font-black uppercase tracking-widest text-slate-400">User Rating</p>
-            </div>
-         </div>
-      </section>
     </div>
   );
 };

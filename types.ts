@@ -1,4 +1,5 @@
 
+
 export enum UserRole {
   TENANT = 'tenant',
   LANDLORD = 'landlord',
@@ -85,6 +86,42 @@ export interface Property {
   };
 }
 
+// Fix: Added MaintenanceTicket interface for house and landlord dashboards
+export interface MaintenanceTicket {
+  id: string;
+  property_id: string;
+  title: string;
+  description: string;
+  category: string;
+  status: 'PENDING' | 'IN_PROGRESS' | 'RESOLVED' | 'CANCELLED';
+  reported_at: string;
+  reported_by: string;
+}
+
+// Fix: Added PropertyApplication interface for landlord tracking
+export interface PropertyApplication {
+  id: string;
+  property_id: string;
+  tenant_id: string;
+  tenant_name: string;
+  tenant_avatar: string;
+  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
+  created_at: string;
+  message?: string;
+}
+
+export interface MapInsight {
+  id: string;
+  author_name: string;
+  author_avatar: string;
+  category: 'safety' | 'flood' | 'food' | 'ums';
+  lat: number;
+  lng: number;
+  rating: number;
+  comment: string;
+  area_name: string;
+}
+
 export interface Gig {
   id: string;
   landlord_id: string;
@@ -127,20 +164,6 @@ export interface RoommateProfile {
   match_percentage: number;
 }
 
-export interface PropertyApplication {
-  id: string;
-  property_id: string;
-  property_title: string;
-  tenant_id: string;
-  tenant_name: string;
-  tenant_avatar: string;
-  tenant_occupation: string;
-  status: 'PENDING' | 'ACCEPTED' | 'REJECTED';
-  applied_at: string;
-  match_score: number;
-  message: string;
-}
-
 export interface Inquiry {
   id: string;
   property_id: string;
@@ -153,18 +176,6 @@ export interface Inquiry {
   date: string;
   amount?: number;
   message: string;
-}
-
-export interface MaintenanceTicket {
-  id: string;
-  property_id: string;
-  property_title?: string;
-  title: string;
-  category: string;
-  status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED';
-  reported_at: string;
-  description: string;
-  reported_by: string;
 }
 
 export interface Bill {

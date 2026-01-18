@@ -64,7 +64,7 @@ export const Checkout: React.FC = () => {
     }, 2000);
   };
 
-  const finalizePayment = () => {
+  const finalizePayment = async () => {
     if (type === 'UPGRADE') {
       const savedUser = localStorage.getItem('domira_user');
       if (savedUser) {
@@ -74,7 +74,8 @@ export const Checkout: React.FC = () => {
         localStorage.setItem('domira_user', JSON.stringify(u));
       }
     } else if (type === 'VERIFY' && property) {
-       api.properties.update(property.id, { verification_status: 'verified', is_verified: true });
+       // Mock the verification update in our state-based DB
+       await api.properties.update(property.id, { verification_status: 'verified', is_verified: true });
     }
     setStep(3);
   };
@@ -93,7 +94,7 @@ export const Checkout: React.FC = () => {
         desc: period === 'monthly' ? 'Priority matching active for 30 days' : 'Priority matching active for 1 year' 
       };
     }
-    if (type === 'VERIFY') return { title: 'Asset Verification Audit', amount: 150, desc: 'Professional on-site vetting in KK' };
+    if (type === 'VERIFY') return { title: 'On-Site Audit Fee', amount: 150, desc: `Professional agent verification for ${property?.title}` };
     if (type === 'BILLS') return { title: 'Shared Utilities Payment', amount: 116.85, desc: 'TNB & High-Speed Internet share' };
     return { title: property?.title || 'Reservation Deposit', amount: property?.price || 0, desc: 'Secures your spot instantly' };
   };
@@ -176,6 +177,17 @@ export const Checkout: React.FC = () => {
                          </div>
                       </div>
 
+                      {type === 'VERIFY' && (
+                        <div className="p-8 bg-blue-500/5 border border-blue-500/10 rounded-3xl mb-10">
+                           <h4 className="text-xs font-black text-blue-500 uppercase tracking-widest mb-4 flex items-center gap-3">
+                              <ShieldCheck size={16} /> Identity & Quality Audit
+                           </h4>
+                           <p className="text-xs text-slate-500 font-medium leading-relaxed uppercase">
+                              This fee covers a physical on-site visit by a Domira agent to verify your unit's condition, address accuracy, and ownership documents. You'll receive the <span className="text-domira-gold font-black">"Verified Asset"</span> badge upon success.
+                           </p>
+                        </div>
+                      )}
+
                       {type === 'RESERVE' && (
                         <div className="p-8 bg-slate-50 dark:bg-domira-dark rounded-3xl border border-slate-200 dark:border-slate-800 mb-10 shadow-inner">
                            <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest mb-6 flex items-center gap-3">
@@ -216,8 +228,8 @@ export const Checkout: React.FC = () => {
 
               {step === 2 && (
                 <div className="bg-white dark:bg-domira-navy p-10 md:p-14 rounded-[3.5rem] border border-slate-100 dark:border-slate-800 shadow-2xl animate-in fade-in slide-in-from-right-10 duration-500">
-                   <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-2">Secure Payment</h2>
-                   <p className="text-slate-400 text-xs font-black uppercase tracking-widest mb-10">Select your preferred authorization channel</p>
+                   <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tighter uppercase mb-2">Secure Authorization</h2>
+                   <p className="text-slate-400 text-xs font-black uppercase tracking-widest mb-10">Select your preferred financial channel</p>
                    
                    {!showConfirmButton ? (
                      <div className="space-y-10">
@@ -241,7 +253,7 @@ export const Checkout: React.FC = () => {
 
                         {paymentMethod === 'FPX' && (
                            <div className="animate-in fade-in duration-500">
-                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Malaysia Financial Providers</p>
+                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Financial Providers</p>
                              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {MALAYSIAN_BANKS.map(bank => (
                                   <button key={bank.id} onClick={() => setSelectedBank(bank.id)} className={`flex items-center gap-3 p-5 rounded-2xl border transition-all text-left ${selectedBank === bank.id ? 'bg-domira-gold text-domira-navy border-white shadow-xl scale-[1.02]' : 'bg-slate-50 dark:bg-domira-dark border-slate-100 dark:border-slate-800 hover:border-domira-gold/30'}`}>
@@ -255,7 +267,7 @@ export const Checkout: React.FC = () => {
 
                         {paymentMethod === 'EWALLET' && (
                            <div className="animate-in fade-in duration-500">
-                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Fast Checkout</p>
+                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4 ml-1">Instant Checkout</p>
                              <div className="grid grid-cols-2 gap-4">
                                 {EWALLETS.map(w => (
                                    <button key={w.id} className="flex items-center justify-between p-6 bg-slate-50 dark:bg-domira-dark border border-slate-200 dark:border-slate-800 rounded-3xl hover:border-domira-gold transition-all group">
@@ -276,7 +288,7 @@ export const Checkout: React.FC = () => {
                            <div className="animate-in fade-in duration-500 space-y-6">
                               <div className="grid md:grid-cols-2 gap-6">
                                  <div>
-                                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Card Number</label>
+                                    <label className="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Secure Card Input</label>
                                     <input type="text" placeholder="•••• •••• •••• ••••" className="w-full bg-slate-50 dark:bg-domira-dark border border-slate-200 dark:border-slate-800 p-4 rounded-2xl outline-none focus:border-domira-gold text-white font-bold" />
                                  </div>
                                  <div className="grid grid-cols-2 gap-4">
@@ -301,7 +313,7 @@ export const Checkout: React.FC = () => {
                         onClick={handlePay} 
                         className="py-7 font-black uppercase text-xs tracking-[0.3em] shadow-2xl bg-domira-gold text-domira-navy mt-6 border-white/20"
                        >
-                          {processing ? 'Connecting Gateway...' : `Authorize Authorization`}
+                          {processing ? 'Connecting Gateway...' : `Initialize RM ${total.toFixed(2)}`}
                        </Button>
                      </div>
                    ) : (
@@ -310,11 +322,11 @@ export const Checkout: React.FC = () => {
                           <ShieldCheck className="text-blue-500" size={32} />
                         </div>
                         <div>
-                          <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 tracking-tight uppercase">Ready to Verify</h3>
-                          <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed uppercase font-bold tracking-tight">Confirming payment of <strong className="text-domira-gold">RM {total.toFixed(2)}</strong> from your chosen source.</p>
+                          <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3 tracking-tight uppercase">Ready to Authorize</h3>
+                          <p className="text-slate-500 text-sm max-w-sm mx-auto leading-relaxed uppercase font-bold tracking-tight">Authorizing payment of <strong className="text-domira-gold">RM {total.toFixed(2)}</strong> from your account.</p>
                         </div>
                         <Button variant="primary" fullWidth size="lg" onClick={finalizePayment} className="py-7 font-black uppercase text-xs tracking-[0.2em] bg-green-600 hover:bg-green-700 shadow-[0_20px_60px_rgba(22,163,74,0.3)] border-green-700 active:scale-95 transition-all">
-                           Release Authorization (Simulate Success)
+                           Release Authorization
                         </Button>
                      </div>
                    )}
@@ -328,7 +340,7 @@ export const Checkout: React.FC = () => {
                    </div>
                    <h2 className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter mb-6 uppercase">Payment <span className="text-domira-gold">Cleared</span></h2>
                    <p className="text-slate-500 font-medium mb-16 text-lg max-w-lg mx-auto leading-relaxed">
-                      {type === 'UPGRADE' ? 'The elite experience is now yours. Your gold interface and priority status have been activated.' : type === 'VERIFY' ? 'Audit request received. Our verification agents in KK will reach out within 24 hours.' : type === 'BILLS' ? 'Household obligations fulfilled. Your contributions are updated in the dashboard.' : 'Unit reservation locked. Your legal agreement is ready for final digital countersign.'}
+                      {type === 'UPGRADE' ? 'The elite experience is now yours. Your gold interface and priority status have been activated.' : type === 'VERIFY' ? `Audit request for "${property?.title}" received. Our verification agents in KK will reach out within 24 hours.` : type === 'BILLS' ? 'Household obligations fulfilled. Your contributions are updated in the dashboard.' : 'Unit reservation locked. Your legal agreement is ready for final digital countersign.'}
                    </p>
                    <Link to={type === 'RESERVE' || type === 'BILLS' ? '/my-house' : type === 'VERIFY' ? '/for-landlords' : '/profile'}>
                       <Button variant="primary" fullWidth size="lg" className="py-8 font-black uppercase text-sm tracking-[0.4em] shadow-2xl bg-domira-gold text-domira-navy hover:scale-105 transition-all border-white/20">Go to Dashboard</Button>
@@ -341,7 +353,7 @@ export const Checkout: React.FC = () => {
            <div className="lg:col-span-1">
               <div className={`p-10 rounded-[3.5rem] shadow-2xl border sticky top-28 transition-all duration-1000 group ${type === 'UPGRADE' || isGoldMember() ? 'bg-slate-950 border-domira-gold/40 ring-4 ring-domira-gold/5' : 'bg-domira-navy border-white/5'}`}>
                  <h3 className={`text-[10px] font-black uppercase tracking-[0.4em] mb-10 flex items-center gap-3 ${type === 'UPGRADE' ? 'text-domira-gold' : 'text-slate-400'}`}>
-                    <CreditCard size={18}/> Order Summary
+                    <CreditCard size={18}/> Global Summary
                  </h3>
                  <div className="space-y-6 relative z-10">
                     <div className="flex justify-between items-center text-sm font-bold">
@@ -353,7 +365,7 @@ export const Checkout: React.FC = () => {
                         <div className="flex justify-between items-center text-sm font-bold">
                           <div className="flex flex-col">
                              <span className="text-slate-500 uppercase tracking-widest">Security Deposit</span>
-                             <span className="text-[8px] text-domira-gold font-black uppercase tracking-widest mt-0.5">Held in Escrow</span>
+                             <span className="text-[8px] text-domira-gold font-black uppercase tracking-widest mt-0.5">Escrow Vault</span>
                           </div>
                           <span className="font-black text-white">RM {deposit.toFixed(2)}</span>
                         </div>
@@ -364,10 +376,10 @@ export const Checkout: React.FC = () => {
                       </div>
                     )}
                     <div className="flex justify-between items-center pt-10 border-t-2 border-dashed border-white/10">
-                       <span className="text-domira-gold font-black uppercase text-xs tracking-[0.4em]">Grand Total</span>
+                       <span className="text-domira-gold font-black uppercase text-xs tracking-[0.4em]">Net Payable</span>
                        <div className="text-right">
                           <span className="text-4xl font-black tracking-tighter text-white">RM {total.toFixed(2)}</span>
-                          <p className="text-[8px] font-bold uppercase text-slate-500 mt-1">SST @ 0% Included</p>
+                          <p className="text-[8px] font-bold uppercase text-slate-500 mt-1">Sabah SST @ 0% Included</p>
                        </div>
                     </div>
                  </div>
@@ -376,16 +388,16 @@ export const Checkout: React.FC = () => {
                     <div className="flex justify-center gap-4 mb-4">
                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/FPX_Logo.svg/1200px-FPX_Logo.svg.png" className="h-5 opacity-40 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" alt="" />
                     </div>
-                    "Payments encrypted via 256-bit SSL Layer. Domira Escrow Gateway Active."
+                    "Escrow protection active. Funds held by Domira Financial Trust."
                  </div>
               </div>
 
               {/* Extra Trust Badge */}
               <div className="mt-8 p-6 bg-slate-50 dark:bg-domira-navy border border-slate-200 dark:border-slate-800 rounded-[2.5rem] flex items-center gap-4">
-                 <div className="p-3 bg-green-500/10 rounded-xl"><ShieldCheck size={20} className="text-green-500" /></div>
+                 <div className="p-3 bg-green-500/10 rounded-xl shadow-lg"><ShieldCheck size={20} className="text-green-500" /></div>
                  <div>
-                    <p className="text-[10px] font-black uppercase text-slate-900 dark:text-white leading-none mb-1">Buyer Protection</p>
-                    <p className="text-[9px] font-bold uppercase text-slate-400">100% Secure Checkout</p>
+                    <p className="text-[10px] font-black uppercase text-slate-900 dark:text-white leading-none mb-1">Audit Guarantee</p>
+                    <p className="text-[9px] font-bold uppercase text-slate-400 tracking-tighter">100% Refundable if Audit Fails</p>
                  </div>
               </div>
            </div>

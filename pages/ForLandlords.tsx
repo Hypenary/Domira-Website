@@ -34,11 +34,7 @@ export const ForLandlords: React.FC = () => {
     if (saved) {
       const u = JSON.parse(saved);
       setUser(u);
-      if (u.landlord_status === 'approved' || u.agent_status === 'approved') {
-        fetchDashboard();
-      } else {
-        setLoading(false);
-      }
+      fetchDashboard();
     } else {
       setLoading(false);
     }
@@ -98,70 +94,35 @@ export const ForLandlords: React.FC = () => {
     return (
       <div className="min-h-screen bg-slate-50 dark:bg-domira-dark transition-colors">
         <div className="bg-domira-navy pt-24 pb-44 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-domira-gold/5 blur-3xl rounded-full"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-domira-gold/5 blur-3xl rounded-full pointer-events-none"></div>
           <div className="max-w-7xl mx-auto px-4 text-center relative z-10">
             <div className="inline-flex gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-domira-gold text-[10px] font-black uppercase tracking-widest mb-8">
-               <ShieldAlert size={14} className="fill-domira-gold" /> Host Verification Required
+               <ShieldAlert size={14} className="fill-domira-gold" /> Verification Protocol Active
             </div>
-            <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[0.9]">Unlock the <span className="text-domira-gold italic">Market</span>.</h1>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-12 font-medium">To protect our tenants, all landlords and agents must be verified before listing units on Domira.</p>
+            <h1 className="text-5xl md:text-8xl font-black text-white tracking-tighter mb-8 leading-[0.9] uppercase">Manage Your <br/><span className="text-domira-gold italic">Portfolio</span>.</h1>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">Verified hosts get 4x more tenant engagement. Apply today to unlock the Sabah rental marketplace.</p>
             
-            {user?.landlord_status === 'pending' || user?.agent_status === 'pending' ? (
-              <div className="flex flex-col items-center gap-6 animate-in zoom-in-95 duration-500">
-                <div className="p-8 bg-white/5 rounded-3xl border border-white/10 inline-block">
-                   <p className="text-domira-gold font-black uppercase text-xs tracking-[0.2em]">Application Currently Under Review</p>
-                   <p className="text-slate-400 text-[10px] mt-2">You will be notified via email once approved.</p>
-                </div>
-                <button 
-                  onClick={mockApprove}
-                  className="mt-4 px-6 py-3 bg-slate-800 hover:bg-slate-700 text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-domira-gold border border-slate-700 rounded-2xl transition-all flex items-center gap-2"
-                >
-                  <Sparkles size={14} /> [Test] Simulate Fast Approval
-                </button>
-              </div>
-            ) : (
-              <div className="flex flex-col md:flex-row justify-center gap-6">
-                <Link to="/landlord-apply">
-                  <Button variant="primary" size="lg" className="w-full md:px-12 py-6 font-black uppercase tracking-widest text-xs shadow-2xl shadow-domira-gold/20">
-                    Register as Landlord
-                  </Button>
-                </Link>
-                <Link to="/agent-apply">
-                  <Button variant="outline" size="lg" className="w-full md:px-12 py-6 font-black uppercase tracking-widest text-xs text-white border-white/20 hover:bg-white/5">
-                    <Landmark size={16} className="mr-2 text-domira-gold" /> Licensed Agent Sign-up
-                  </Button>
-                </Link>
-              </div>
-            )}
+            <div className="flex flex-col md:flex-row justify-center gap-6">
+              <Link id="btn-landlord-reg" to="/landlord-apply">
+                <Button variant="primary" size="lg" className="w-full md:px-12 py-7 font-black uppercase tracking-widest text-xs shadow-2xl shadow-domira-gold/20 active:scale-95 transition-all">
+                  Registry for Landlords
+                </Button>
+              </Link>
+              <Link id="btn-agent-reg" to="/agent-apply">
+                <Button variant="outline" size="lg" className="w-full md:px-12 py-7 font-black uppercase tracking-widest text-xs text-white border-white/20 hover:bg-white/5 active:scale-95 transition-all">
+                  <Landmark size={16} className="mr-3 text-domira-gold" /> Agent REN Channel
+                </Button>
+              </Link>
+            </div>
+            <button onClick={mockApprove} className="mt-10 text-[10px] font-black text-slate-600 uppercase tracking-[0.3em] hover:text-domira-gold transition-colors underline underline-offset-8 decoration-slate-800">[Simulation: Bypass Vetting]</button>
           </div>
         </div>
-
-        {/* Benefits for Agents Section */}
-        <section className="py-32 max-w-7xl mx-auto px-4 -mt-20 relative z-20">
-           <div className="grid md:grid-cols-2 gap-12">
-              <div className="bg-white dark:bg-domira-navy p-10 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-xl group hover:border-domira-gold/30 transition-all">
-                 <div className="w-16 h-16 bg-domira-gold/10 rounded-2xl flex items-center justify-center mb-8"><Briefcase className="text-domira-gold" size={32} /></div>
-                 <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-4 tracking-tight uppercase">For Property Owners</h3>
-                 <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed mb-8">Manage your units directly, collect rent digitally via FPX, and use our conversion planner to boost your yield by up to 20%.</p>
-                 <Link to="/landlord-apply" className="text-domira-gold font-black uppercase text-[10px] tracking-widest flex items-center gap-2 hover:translate-x-2 transition-transform">Get Started <ArrowRight size={14}/></Link>
-              </div>
-              <div className="bg-slate-950 p-10 rounded-[3rem] border border-white/5 shadow-2xl relative overflow-hidden group">
-                 <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:scale-110 transition-transform"><Landmark size={120} className="text-domira-gold" /></div>
-                 <div className="relative z-10">
-                    <div className="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center mb-8 border border-white/10"><ShieldCheck className="text-domira-gold" size={32} /></div>
-                    <h3 className="text-2xl font-black text-white mb-4 tracking-tight uppercase">For Licensed Agents</h3>
-                    <p className="text-slate-400 font-medium leading-relaxed mb-8">Unlock the verified agent badge, gain priority search placement, and use our digital tenancy tool to close deals in minutes, not days.</p>
-                    <Link to="/agent-apply" className="text-domira-gold font-black uppercase text-[10px] tracking-widest flex items-center gap-2 hover:translate-x-2 transition-transform">Apply with REN <ArrowRight size={14}/></Link>
-                 </div>
-              </div>
-           </div>
-        </section>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-domira-dark pb-20 transition-colors">
+    <div className="min-h-screen bg-slate-50 dark:bg-domira-dark pb-24 transition-colors duration-300">
       {/* Modal Systems */}
       {isChatOpen && chatProperty && selectedInquiry && (
         <ChatModal 
@@ -189,32 +150,32 @@ export const ForLandlords: React.FC = () => {
         />
       )}
 
-      <div className="bg-domira-navy pt-10 pb-16">
+      <div className="bg-domira-navy pt-12 pb-20">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
             <div>
-              <h1 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-                <LayoutDashboard className="text-domira-gold" /> {user.role === UserRole.AGENT ? 'Agent Dashboard' : 'Landlord Hub'}
+              <h1 className="text-4xl font-black text-white tracking-tighter flex items-center gap-4 uppercase">
+                <LayoutDashboard className="text-domira-gold" /> Host Dashboard
               </h1>
-              <p className="text-slate-400 font-medium">Managing Portfolio: {user.full_name} {user.ren_number && `(${user.ren_number})`}</p>
+              <p className="text-slate-400 font-bold uppercase text-[10px] tracking-[0.4em] mt-2">Managing ID: {user.full_name}</p>
             </div>
-            <div className="flex gap-3">
-               <Link to="/list-property"><Button variant="primary" className="font-black uppercase tracking-widest text-[10px] px-8">Add Listing</Button></Link>
-               <Link to="/profile"><Button variant="outline" className="font-black uppercase tracking-widest text-[10px] text-white border-white/20">Profile</Button></Link>
+            <div className="flex gap-3 w-full md:w-auto">
+               <Link to="/list-property" className="flex-1 md:flex-none"><Button id="btn-add-listing" variant="primary" className="w-full font-black uppercase tracking-widest text-[10px] px-10 py-4 shadow-xl">New Listing</Button></Link>
+               <Link to="/profile" className="flex-1 md:flex-none"><Button variant="outline" className="w-full font-black uppercase tracking-widest text-[10px] text-white border-white/20 px-10 py-4">Profile Passport</Button></Link>
             </div>
           </div>
 
-          <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 mt-10 max-w-2xl overflow-x-auto scrollbar-hide">
+          <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 mt-12 max-w-2xl overflow-x-auto scrollbar-hide glass shadow-2xl">
             {[
               { id: 'dashboard', label: 'Overview', icon: BarChart },
-              { id: 'units', label: 'My Units', icon: Building },
-              { id: 'leads', label: 'Leads & Inquiries', icon: UserCheck },
-              { id: 'fixes', label: 'Fixes', icon: Wrench },
+              { id: 'units', label: 'Portfolio', icon: Building },
+              { id: 'leads', label: 'Tenant Inquiries', icon: UserCheck },
+              { id: 'fixes', label: 'Maintenance', icon: Wrench },
             ].map(tab => (
               <button 
-                key={tab.id}
+                key={tab.id} id={`tab-${tab.id}`}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-domira-gold text-domira-navy shadow-xl' : 'text-slate-400 hover:text-white'}`}
+                className={`flex-1 flex items-center justify-center gap-3 py-3.5 px-6 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.id ? 'bg-domira-gold text-domira-navy shadow-2xl scale-[1.02]' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
               >
                 <tab.icon size={14} /> {tab.label}
               </button>
@@ -223,60 +184,89 @@ export const ForLandlords: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-10">
+      <div className="max-w-7xl mx-auto px-4 py-12">
         
         {activeTab === 'dashboard' && (
           <div className="animate-in fade-in duration-500 space-y-12">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <StatCard icon={Eye} label="Visibility" value={dashboardData.stats.totalViews} trend="+12%" color="blue" />
-              <StatCard icon={MessageCircle} label="Active Leads" value={dashboardData.stats.activeInquiries} trend="3 New" color="gold" />
-              <StatCard icon={Calendar} label="Viewings" value={dashboardData.stats.pendingViewings} trend="Sat 10AM" color="purple" />
-              <StatCard icon={CreditCard} label="Revenue" value={`RM ${dashboardData.stats.totalReserved * 1200}`} trend="3 Deposits" color="green" />
+              <StatCard id="stat-views" icon={Eye} label="Impressions" value={dashboardData.stats.totalViews} trend="+18%" color="blue" />
+              <StatCard id="stat-leads" icon={MessageCircle} label="Active Leads" value={dashboardData.stats.activeInquiries} trend="New" color="gold" />
+              <StatCard id="stat-viewings" icon={Calendar} label="Viewings" value={dashboardData.stats.pendingViewings} trend="Syncing" color="purple" />
+              <StatCard id="stat-revenue" icon={CreditCard} label="Pending Revenue" value="RM 550.00" trend="Escrow" color="green" />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 bg-white dark:bg-domira-navy rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
-                  <div className="p-8 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-domira-deep/30 flex justify-between items-center">
-                     <h2 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
-                        <Inbox size={18} className="text-domira-gold"/> Recent Applications
-                     </h2>
-                     <button onClick={() => setActiveTab('leads')} className="text-[10px] font-black text-domira-gold uppercase tracking-widest hover:underline">View All Leads</button>
-                  </div>
-                  <div className="divide-y divide-slate-100 dark:divide-slate-800 p-20 text-center">
-                     <p className="text-slate-400 text-sm italic">"Review applicants to ensure high-harmony matches."</p>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+              <div className="lg:col-span-2 space-y-8">
+                  {myProperties.some(p => p.verification_status === 'not_requested') && (
+                     <div id="unverified-warning" className="bg-amber-50 dark:bg-amber-900/10 border-2 border-amber-200 dark:border-amber-800/50 p-10 rounded-[3rem] flex flex-col md:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden group">
+                        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:rotate-12 transition-transform duration-700"><Zap size={100} className="text-amber-600" /></div>
+                        <div className="flex items-center gap-8 relative z-10">
+                           <div className="w-20 h-20 bg-amber-500/20 rounded-[2rem] flex items-center justify-center border border-amber-500/40 shadow-xl">
+                              <ShieldAlert className="text-amber-600" size={36} />
+                           </div>
+                           <div>
+                              <h3 className="text-2xl font-black text-amber-900 dark:text-amber-200 uppercase tracking-tight">Trust Deficit Detected</h3>
+                              <p className="text-sm text-amber-700 dark:text-amber-400 font-bold uppercase tracking-widest mt-2">You have {myProperties.filter(p => p.verification_status === 'not_requested').length} unverified listings reducing your visibility.</p>
+                           </div>
+                        </div>
+                        <button onClick={() => setActiveTab('units')} className="relative z-10 px-10 py-4 bg-amber-600 text-white rounded-2xl text-[11px] font-black uppercase tracking-widest shadow-[0_20px_40px_rgba(217,119,6,0.3)] hover:bg-amber-700 hover:translate-y-[-2px] transition-all active:scale-95">Initiate Audit RM150</button>
+                     </div>
+                  )}
+
+                  <div className="bg-white dark:bg-domira-navy rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
+                      <div className="p-10 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-domira-deep/30 flex justify-between items-center">
+                        <h2 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-[0.2em] flex items-center gap-3">
+                            <Inbox size={20} className="text-domira-gold"/> Recent Applicant Activity
+                        </h2>
+                        <button onClick={() => setActiveTab('leads')} className="text-[10px] font-black text-domira-gold uppercase tracking-[0.2em] hover:underline">Manage All</button>
+                      </div>
+                      <div className="p-12 divide-y divide-slate-100 dark:divide-slate-800">
+                        {dashboardData.inquiries.length > 0 ? (
+                           dashboardData.inquiries.map((inq: any) => (
+                             <div key={inq.id} className="py-8 flex items-center justify-between group">
+                               <div className="flex items-center gap-6">
+                                  <img src={inq.tenant_avatar} className="w-16 h-16 rounded-[1.5rem] object-cover border-2 border-slate-100 dark:border-slate-700 shadow-sm" />
+                                  <div className="min-w-0">
+                                     <p className="font-black text-slate-900 dark:text-white text-lg uppercase tracking-tight">{inq.tenant_name}</p>
+                                     <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest truncate max-w-[300px] mt-1 italic">"{inq.message}"</p>
+                                  </div>
+                               </div>
+                               <Button variant="ghost" className="text-[10px] font-black uppercase tracking-widest text-domira-gold hover:translate-x-1 transition-all" onClick={() => handleReply(inq)}>Open Thread <ChevronRight size={14} className="ml-1.5"/></Button>
+                             </div>
+                           ))
+                        ) : (
+                           <div className="text-center py-20 opacity-50">
+                              <AlertCircle className="mx-auto mb-6 w-12 h-12 text-slate-300" />
+                              <p className="text-slate-400 font-bold uppercase tracking-widest">No recent tenant activity.</p>
+                           </div>
+                        )}
+                      </div>
                   </div>
               </div>
               
-              <div className="space-y-6">
-                 {/* Property Conversion Planner Teaser */}
-                 <div className="bg-slate-950 text-white p-8 rounded-[2.5rem] border-2 border-domira-gold shadow-[0_20px_50px_rgba(251,191,36,0.15)] relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform">
-                       <Calculator size={80} className="text-domira-gold" />
-                    </div>
+              <div className="space-y-8">
+                 <div className="bg-slate-950 text-white p-10 rounded-[3rem] border-2 border-domira-gold shadow-[0_30px_60px_rgba(251,191,36,0.15)] relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-125 transition-transform duration-700"><Calculator size={100} className="text-domira-gold" /></div>
                     <div className="relative z-10">
-                       <div className="inline-flex gap-2 px-3 py-1 bg-domira-gold/20 border border-domira-gold/30 rounded-lg text-domira-gold text-[8px] font-black uppercase tracking-widest mb-6">
-                          <Zap size={10} fill="currentColor" /> Landlord Toolkit
+                       <div className="inline-flex gap-2 px-3 py-1 bg-domira-gold/20 border border-domira-gold/30 rounded-lg text-domira-gold text-[8px] font-black uppercase tracking-widest mb-8">
+                          <TrendingUp size={10} /> ROI Maximizer
                        </div>
-                       <h3 className="text-2xl font-black mb-3 tracking-tight">HMO Conversion Planner</h3>
-                       <p className="text-slate-400 text-xs font-medium mb-8 leading-relaxed">
-                          Analyze your property to estimate potential <span className="text-white font-bold">RM 1,200+ monthly surplus</span> by converting to student shared rentals.
-                       </p>
-                       <Link to="/conversion-planner">
-                          <Button variant="primary" fullWidth className="py-4 font-black uppercase text-[10px] tracking-widest shadow-xl bg-domira-gold text-domira-navy">
-                             Launch Planner <ArrowRight size={14} className="ml-2" />
-                          </Button>
+                       <h3 className="text-3xl font-black mb-4 tracking-tighter uppercase leading-none">HMO <br/>Planner.</h3>
+                       <p className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-10 leading-relaxed">Project shared student rental yields for Sepanggar & Alamesra assets.</p>
+                       <Link id="link-roi-tool" to="/conversion-planner">
+                          <Button variant="primary" fullWidth className="py-5 font-black uppercase text-[10px] tracking-widest shadow-2xl bg-domira-gold text-domira-navy hover:scale-105 transition-transform">Launch ROI Tool</Button>
                        </Link>
                     </div>
                  </div>
 
-                 <div className="bg-white dark:bg-domira-navy p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800">
-                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Quick Links</h3>
-                    <div className="space-y-2">
-                       <button className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-between">
-                          Order Signage <ChevronRight size={14} />
+                 <div className="bg-white dark:bg-domira-navy p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl">
+                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-6 border-b border-slate-100 dark:border-slate-800 pb-2">Quick Commands</h3>
+                    <div className="space-y-3">
+                       <button className="w-full text-left p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-between group">
+                          Request Vetting <ChevronRight size={14} className="text-slate-300 group-hover:text-domira-gold" />
                        </button>
-                       <button className="w-full text-left p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-bold text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-between">
-                          Tax Documents <ChevronRight size={14} />
+                       <button className="w-full text-left p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800 text-[11px] font-black uppercase tracking-widest text-slate-600 dark:text-slate-300 transition-colors flex items-center justify-between group">
+                          Contract Builder <ChevronRight size={14} className="text-slate-300 group-hover:text-domira-gold" />
                        </button>
                     </div>
                  </div>
@@ -285,116 +275,46 @@ export const ForLandlords: React.FC = () => {
           </div>
         )}
 
-        {activeTab === 'leads' && (
-          <div className="bg-white dark:bg-domira-navy rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden animate-in slide-in-from-bottom-6 duration-500">
-             <div className="px-8 py-6 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-domira-deep/30 flex justify-between items-center">
-                <h2 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
-                   <Inbox size={18} className="text-domira-gold"/> Active Inquiries
-                </h2>
-                <div className="relative group">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                  <input 
-                    type="text" 
-                    placeholder="Search leads..." 
-                    className="bg-white dark:bg-domira-dark border border-slate-200 dark:border-slate-700 rounded-xl pl-10 pr-4 py-2 text-[10px] text-white outline-none focus:ring-2 focus:ring-domira-gold/20 transition-all w-64" 
-                  />
-                </div>
-             </div>
-             
-             <div className="divide-y divide-slate-100 dark:divide-slate-800">
-                {dashboardData.inquiries.length === 0 ? (
-                  <div className="py-20 text-center">
-                    <AlertCircle className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                    <p className="text-slate-500 font-medium">No active inquiries at the moment.</p>
-                  </div>
-                ) : (
-                  dashboardData.inquiries.map((inq: Inquiry) => {
-                    const linkedProperty = myProperties.find(p => p.id === inq.property_id);
-                    return (
-                      <div key={inq.id} className="px-8 py-8 hover:bg-slate-50 dark:hover:bg-white/[0.02] transition-colors flex flex-col md:flex-row md:items-center gap-8 group">
-                         <div className="flex items-center gap-6 flex-1 min-w-0">
-                            <div className="relative shrink-0">
-                               <img src={inq.tenant_avatar} className="w-16 h-16 rounded-[1.5rem] object-cover border-2 border-slate-100 dark:border-slate-700 group-hover:border-domira-gold transition-colors" alt="" />
-                               {inq.status === 'PENDING' && (
-                                 <div className="absolute -top-1 -right-1 w-4 h-4 bg-domira-gold rounded-full border-2 border-white dark:border-domira-navy animate-pulse shadow-lg"></div>
-                               )}
-                            </div>
-                            <div className="min-w-0">
-                               <div className="flex items-center gap-3 mb-2">
-                                  <h3 className="font-black text-slate-900 dark:text-white text-lg truncate cursor-pointer hover:text-domira-gold transition-colors" onClick={() => handleViewProfile(inq)}>
-                                    {inq.tenant_name}
-                                  </h3>
-                                  <span className={`px-2 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-widest ${inq.type === 'CHAT' ? 'bg-blue-100 text-blue-600' : 'bg-purple-100 text-purple-600'}`}>
-                                    {inq.type}
-                                  </span>
-                               </div>
-                               <p className="text-sm text-slate-500 dark:text-slate-400 mb-3 italic line-clamp-1">"{inq.message}"</p>
-                               <div className="flex items-center gap-6 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
-                                  <span className="flex items-center gap-1.5"><Home size={12} className="text-domira-gold" /> {linkedProperty?.title || 'Unknown Asset'}</span>
-                                  <span className="flex items-center gap-1.5"><Clock size={12} /> {inq.date}</span>
-                               </div>
-                            </div>
-                         </div>
-                         
-                         <div className="flex items-center gap-3">
-                            <Button variant="primary" size="sm" className="h-10 px-6 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-domira-gold/10" onClick={() => handleReply(inq)}>Reply Now</Button>
-                            <Button variant="outline" size="sm" className="h-10 px-6 text-[10px] font-black uppercase tracking-widest border-slate-200 dark:border-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white" onClick={() => handleViewProfile(inq)}>Profile</Button>
-                            <button className="p-3 text-slate-300 hover:text-slate-600 transition-colors"><MoreVertical size={20}/></button>
-                         </div>
-                      </div>
-                    );
-                  })
-                )}
-             </div>
-          </div>
-        )}
-
         {activeTab === 'units' && (
-          <div className="animate-in slide-in-from-bottom-6 duration-500">
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="animate-in slide-in-from-bottom-10 duration-500">
+             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                 {myProperties.map(prop => (
-                  <div key={prop.id} className="bg-white dark:bg-domira-navy rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden flex flex-col group/card hover:border-domira-gold transition-all duration-500">
-                    <div className="h-52 relative overflow-hidden">
-                      <img src={prop.images[0]} className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-700" alt="" />
-                      <div className="absolute top-4 right-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-widest">
+                  <div key={prop.id} id={`unit-card-${prop.id}`} className={`bg-white dark:bg-domira-navy rounded-[3rem] border shadow-2xl overflow-hidden flex flex-col group/card transition-all duration-700 ${prop.verification_status === 'not_requested' ? 'border-amber-500/40 ring-8 ring-amber-500/5' : 'border-slate-200 dark:border-slate-800 hover:border-domira-gold'}`}>
+                    <div className="h-60 relative overflow-hidden">
+                      <img src={prop.images[0]} className="w-full h-full object-cover group-hover/card:scale-110 transition-transform duration-1000" alt="" />
+                      <div className="absolute top-6 right-6 bg-black/60 backdrop-blur-md text-white px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] border border-white/10">
                         {prop.category}
                       </div>
+                      {prop.verification_status === 'not_requested' && (
+                         <div className="absolute inset-0 bg-amber-950/20 backdrop-grayscale-[0.4] flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity">
+                            <Link to={`/checkout?type=VERIFY&id=${prop.id}`}>
+                               <Button variant="primary" size="sm" className="bg-amber-500 text-white font-black text-[10px] uppercase tracking-widest shadow-2xl hover:bg-amber-600 px-8 py-4">Vetting Required</Button>
+                            </Link>
+                         </div>
+                      )}
                     </div>
-                    <div className="p-8 flex-1 flex flex-col">
-                      <div className="flex justify-between items-start mb-4">
-                         <h3 className="font-black text-slate-900 dark:text-white text-lg group-hover/card:text-domira-gold transition-colors">{prop.title}</h3>
-                         <div className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest ${prop.verification_status === 'verified' ? 'bg-green-500/10 text-green-500' : 'bg-amber-500/10 text-amber-500'}`}>
-                           {prop.verification_status === 'verified' ? 'Verified Asset' : prop.verification_status === 'pending' ? 'Reviewing' : 'Unverified'}
+                    <div className="p-10 flex-1 flex flex-col">
+                      <div className="flex justify-between items-start mb-6">
+                         <h3 className="font-black text-slate-900 dark:text-white text-xl tracking-tight leading-tight group-hover/card:text-domira-gold transition-colors">{prop.title}</h3>
+                         <div className={`shrink-0 px-3 py-1 rounded-xl text-[8px] font-black uppercase tracking-widest shadow-sm ${prop.verification_status === 'verified' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : prop.verification_status === 'pending' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : 'bg-amber-500/10 text-amber-500 border border-amber-500/20'}`}>
+                           {prop.verification_status === 'verified' ? 'Verified' : prop.verification_status === 'pending' ? 'Pending Audit' : 'Trust Alert'}
                          </div>
                       </div>
                       
-                      <div className="grid grid-cols-2 gap-4 mb-8">
-                         <div className="p-3 bg-slate-50 dark:bg-domira-dark rounded-2xl border border-slate-100 dark:border-slate-800">
-                            <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Status</p>
-                            <p className="text-sm font-black text-slate-800 dark:text-white">{prop.beds} Vacant</p>
-                         </div>
-                         <div className="p-3 bg-slate-50 dark:bg-domira-dark rounded-2xl border border-slate-100 dark:border-slate-800">
-                            <p className="text-[9px] font-black text-slate-400 uppercase mb-1">Monthly</p>
-                            <p className="text-sm font-black text-domira-gold">RM {prop.price}</p>
-                         </div>
-                      </div>
-
-                      <div className="mt-auto space-y-3">
-                        {prop.verification_status === 'not_requested' && (
-                          <Link to={`/checkout?type=VERIFY&id=${prop.id}`}>
-                            <Button 
-                              variant="primary" 
-                              fullWidth 
-                              size="sm" 
-                              className="text-[10px] font-black uppercase tracking-widest py-3 bg-domira-gold shadow-lg shadow-domira-gold/20"
-                            >
-                               Get Trust Badge (RM150)
-                            </Button>
+                      <div className="mt-auto space-y-4 pt-8 border-t border-slate-100 dark:border-slate-800">
+                        {prop.verification_status === 'not_requested' ? (
+                          <Link id={`btn-verify-${prop.id}`} to={`/checkout?type=VERIFY&id=${prop.id}`}>
+                            <Button variant="primary" fullWidth className="py-4 font-black uppercase text-[10px] tracking-widest bg-amber-500 shadow-xl shadow-amber-500/20 border-white/10 active:scale-95 transition-all">Start Trust Audit (RM150)</Button>
                           </Link>
+                        ) : prop.verification_status === 'pending' ? (
+                           <div className="w-full py-4 bg-blue-500/5 border border-blue-500/20 rounded-2xl text-center shadow-inner"><span className="text-[10px] font-black text-blue-500 uppercase tracking-widest flex items-center justify-center gap-2 animate-pulse"><Clock size={14}/> Agent Dispatching Soon</span></div>
+                        ) : (
+                           <div className="w-full py-4 bg-green-500/5 border border-green-500/20 rounded-2xl text-center shadow-inner"><span className="text-[10px] font-black text-green-500 uppercase tracking-widest flex items-center justify-center gap-2"><ShieldCheck size={14}/> 100% Verified Asset</span></div>
                         )}
-                        <div className="flex gap-2">
-                           <Button variant="outline" size="sm" fullWidth className="text-[10px] font-black uppercase tracking-widest border-slate-200 dark:border-slate-800" onClick={() => navigate(`/list-property`)}>Edit</Button>
-                           <Link to={`/property/${prop.id}`} className="flex-1"><Button variant="ghost" size="sm" fullWidth className="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-domira-gold">View</Button></Link>
+                        
+                        <div className="flex gap-3">
+                           <Button id={`btn-edit-${prop.id}`} variant="outline" size="sm" fullWidth className="py-3.5 text-[10px] font-black uppercase tracking-widest border-slate-200 dark:border-slate-800 hover:border-domira-gold transition-all" onClick={() => navigate(`/list-property`)}>Edit Profile</Button>
+                           <Link to={`/property/${prop.id}`} className="flex-1"><Button variant="ghost" size="sm" fullWidth className="py-3.5 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-domira-gold transition-all">Public Link</Button></Link>
                         </div>
                       </div>
                     </div>
@@ -402,10 +322,10 @@ export const ForLandlords: React.FC = () => {
                 ))}
                 
                 <Link to="/list-property" className="h-full">
-                  <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-10 flex flex-col items-center justify-center text-slate-400 hover:border-domira-gold hover:bg-domira-gold/5 transition-all group h-[480px] shadow-inner text-center">
-                     <div className="p-6 bg-slate-100 dark:bg-slate-800 rounded-full mb-6 group-hover:bg-domira-gold/20"><Plus size={40} /></div>
-                     <h3 className="font-black text-xl text-slate-800 dark:text-white uppercase tracking-tight mb-2">New Listing</h3>
-                     <p className="text-xs font-medium max-w-[200px]">Add more assets to your KK portfolio.</p>
+                  <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-[3rem] p-12 flex flex-col items-center justify-center text-slate-400 hover:border-domira-gold hover:bg-domira-gold/5 transition-all duration-500 group h-[480px] shadow-inner text-center">
+                     <div className="w-20 h-20 bg-slate-100 dark:bg-slate-800 rounded-[2rem] flex items-center justify-center mb-8 group-hover:bg-domira-gold/20 group-hover:scale-110 transition-all duration-500"><Plus size={48} /></div>
+                     <h3 className="font-black text-2xl text-slate-800 dark:text-white uppercase tracking-tight">Expand Portfolio</h3>
+                     <p className="text-[11px] font-black uppercase tracking-[0.3em] mt-4 opacity-60">Add new listing in Sabah</p>
                   </div>
                 </Link>
              </div>
@@ -416,7 +336,7 @@ export const ForLandlords: React.FC = () => {
   );
 };
 
-const StatCard = ({ icon: Icon, label, value, trend, color }: any) => {
+const StatCard = ({ icon: Icon, label, value, trend, color, id }: any) => {
   const colors: any = {
     blue: 'text-blue-500 bg-blue-500/10 border-blue-500/20',
     gold: 'text-domira-gold bg-domira-gold/10 border-domira-gold/20',
@@ -424,13 +344,13 @@ const StatCard = ({ icon: Icon, label, value, trend, color }: any) => {
     green: 'text-green-500 bg-green-500/10 border-green-500/20'
   };
   return (
-    <div className="bg-white dark:bg-domira-navy p-7 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl group hover:border-domira-gold transition-all">
-      <div className="flex justify-between items-start mb-6">
-        <div className={`p-4 rounded-2xl border ${colors[color]}`}><Icon className="w-6 h-6" /></div>
-        <span className="text-[9px] font-black text-green-500 bg-green-500/10 px-2 py-1 rounded-lg uppercase tracking-widest border border-green-500/20">{trend}</span>
+    <div id={id} className="bg-white dark:bg-domira-navy p-10 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-xl group hover:border-domira-gold transition-all duration-500">
+      <div className="flex justify-between items-start mb-8">
+        <div className={`p-5 rounded-2xl border ${colors[color]} group-hover:scale-110 transition-transform duration-500`}><Icon className="w-7 h-7" /></div>
+        <span className="text-[9px] font-black text-green-500 bg-green-500/10 px-3 py-1 rounded-xl uppercase tracking-widest border border-green-500/20 shadow-sm">{trend}</span>
       </div>
-      <p className="text-3xl font-black text-slate-900 dark:text-white mb-1 tracking-tight">{value}</p>
-      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{label}</p>
+      <p className="text-3xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter leading-none">{value}</p>
+      <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.4em]">{label}</p>
     </div>
   );
 };
