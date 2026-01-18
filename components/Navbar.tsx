@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Sun, Moon, Crown, Sparkles, User, Home, Search, Users, Briefcase, Settings, LogOut, ChevronRight, Building, Handshake, MapPin, Compass } from 'lucide-react';
+import { Menu, X, Sun, Moon, Crown, Sparkles, User, Home, Search, Users, Briefcase, Settings, LogOut, ChevronRight, Building, Handshake, MapPin, Compass, LayoutDashboard } from 'lucide-react';
 import { Button } from './Button';
 import { UserProfile, UserRole } from '../types';
 import { Logo } from './Logo';
@@ -16,7 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, isDarkMode, toggleTheme })
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => location.pathname.startsWith(path) && (path !== '/' || location.pathname === '/');
 
   const NavLink = ({ to, label, icon: Icon, id }: { to: string; label: string; icon?: any; id?: string }) => (
     <Link 
@@ -44,13 +44,18 @@ export const Navbar: React.FC<NavbarProps> = ({ user, isDarkMode, toggleTheme })
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center space-x-2">
-            <Link id="nav-home" to="/" className={`px-4 py-2 text-sm font-bold transition-all ${isActive('/') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Home</Link>
-            <Link id="nav-properties" to="/find-property" className={`px-4 py-2 text-sm font-bold transition-all ${isActive('/find-property') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Properties</Link>
-            <Link id="nav-roommates" to="/find-roommate" className={`px-4 py-2 text-sm font-bold transition-all ${isActive('/find-roommate') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Roommates</Link>
-            <Link id="nav-explore" to="/explore" className={`px-4 py-2 text-sm font-bold transition-all ${isActive('/explore') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Explorer</Link>
-            <Link id="nav-services" to="/services" className={`px-4 py-2 text-sm font-bold transition-all ${isActive('/services') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Services</Link>
-            <Link id="nav-landlords" to="/for-landlords" className={`px-4 py-2 text-sm font-bold transition-all ${isActive('/for-landlords') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Landlords</Link>
+          <div className="hidden md:flex items-center space-x-1">
+            <Link id="nav-home" to="/" className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all ${isActive('/') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Home</Link>
+            <Link id="nav-properties" to="/find-property" className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all ${isActive('/find-property') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Properties</Link>
+            <Link id="nav-roommates" to="/find-roommate" className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all ${isActive('/find-roommate') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Roommates</Link>
+            <Link id="nav-explore" to="/explore" className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all ${isActive('/explore') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Explorer</Link>
+            
+            {user && (
+              <Link id="nav-my-house" to="/my-house" className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all ${isActive('/my-house') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>My House</Link>
+            )}
+
+            <Link id="nav-services" to="/services" className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all ${isActive('/services') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Services</Link>
+            <Link id="nav-landlords" to="/for-landlords" className={`px-3 py-2 text-xs font-black uppercase tracking-widest transition-all ${isActive('/for-landlords') ? 'text-domira-gold' : 'text-slate-300 hover:text-white'}`}>Landlords</Link>
           </div>
 
           <div className="hidden md:flex items-center space-x-4">
@@ -83,7 +88,7 @@ export const Navbar: React.FC<NavbarProps> = ({ user, isDarkMode, toggleTheme })
 
           {/* Mobile Buttons */}
           <div className="md:hidden flex items-center gap-4">
-            <button onClick={toggleTheme} className="text-slate-300 p-2"><Sun size={20}/></button>
+            <button onClick={toggleTheme} className="text-slate-300 p-2">{isDarkMode ? <Sun size={20}/> : <Moon size={20}/>}</button>
             <button
               id="mobile-menu-toggle"
               onClick={() => setIsOpen(!isOpen)}
@@ -116,6 +121,9 @@ export const Navbar: React.FC<NavbarProps> = ({ user, isDarkMode, toggleTheme })
                       <NavLink id="mob-nav-properties" to="/find-property" label="Properties" icon={Search} />
                       <NavLink id="mob-nav-roommates" to="/find-roommate" label="Roommates" icon={Users} />
                       <NavLink id="mob-nav-explore" to="/explore" label="Explorer" icon={Compass} />
+                      {user && (
+                        <NavLink id="mob-nav-my-house" to="/my-house" label="My House" icon={LayoutDashboard} />
+                      )}
                       <NavLink id="mob-nav-services" to="/services" label="Services Hub" icon={Handshake} />
                       <NavLink id="mob-nav-landlords" to="/for-landlords" label="Landlord Hub" icon={Building} />
                     </div>

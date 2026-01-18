@@ -70,7 +70,8 @@ export const FindProperty: React.FC = () => {
     }
   }, [viewMode, filteredProperties]);
 
-  const FilterControls = () => (
+  // Use a direct JSX expression instead of a nested component function to avoid focus loss
+  const filterElements = (
     <div className="space-y-12">
       <div className="relative group">
          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-domira-gold transition-colors" size={18} />
@@ -140,7 +141,7 @@ export const FindProperty: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
         <div className="flex flex-col lg:flex-row gap-16">
            <div className="hidden lg:block w-80 space-y-12 shrink-0">
-              <FilterControls />
+              {filterElements}
               {!user?.is_gold && <BannerAd user={user} className="mt-16 scale-95 origin-top" />}
            </div>
 
@@ -176,7 +177,7 @@ export const FindProperty: React.FC = () => {
                  <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight uppercase">Search Filters</h2>
                  <button onClick={() => setShowMobileFilters(false)} className="p-3 bg-slate-100 dark:bg-domira-dark rounded-2xl text-slate-500 hover:text-red-500 transition-colors"><X size={20}/></button>
               </div>
-              <FilterControls />
+              {filterElements}
               <div className="pt-6">
                  <Button variant="primary" fullWidth size="lg" className="py-6 font-black uppercase text-xs tracking-widest shadow-2xl bg-domira-gold text-domira-navy" onClick={() => setShowMobileFilters(false)}>Show {filteredProperties.length} Results</Button>
               </div>
